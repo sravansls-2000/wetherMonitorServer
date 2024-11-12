@@ -2,7 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import Connection from './connection.js';
-import { loginController, registerUser } from './controller/userConroller.js';
+import {
+  loginController,
+  matchdetails,
+  registerUser,
+  matchdetailsUpdate,
+} from './controller/userConroller.js';
 
 const app = express();
 const port = 8008;
@@ -22,3 +27,5 @@ app.get('/', (req, res) => {
 });
 app.post('/rigister', registerUser);
 app.post('/login', loginController);
+app.get('/match-details', matchdetails);
+app.post('/match-details-update', matchdetailsUpdate);

@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema(
       unique: true,
     },
     Password: { required: true, type: String },
+    MatchDetails: { type: String },
   },
   { collection: 'user-data' }
 );

@@ -1,8 +1,9 @@
 import User from '../models/user.js';
 import jwt from 'jsonwebtoken';
 const registerUser = async (req, res) => {
+  console.log(req.body);
   const { email, pwd } = req.body;
-
+  console.log(email);
   try {
     const user = new User({
       Email: email,
@@ -16,7 +17,6 @@ const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.json({ status: ' Error', Error: 'Duplicate Error' });
   }
 };
 
@@ -31,7 +31,7 @@ const loginController = async (req, res) => {
     const token = jwt.sign(
       {
         Email: user.Email,
-        pass: user.Password,
+        Password: user.Password,
       },
       'Sindhu@#123'
     );
@@ -40,4 +40,32 @@ const loginController = async (req, res) => {
     res.status(400).json({ msg: ' wrong creddentials' });
   }
 };
-export { registerUser, loginController };
+
+const matchdetails = async (req, res) => {
+  const token = req.headers['X-Auth-Token'];
+
+  try {
+    const decoded = jwt.verify(token, 'Sindhu123');
+    const Email = decoded.email;
+    const user = new User.findOne({ Email });
+
+    res.status(200).json({ MatchDetails: user.MatchDetails });
+  } catch (error) {
+    res.json({ status: 'error', error: 'invalid token' });
+  }
+};
+
+const matchdetailsUpdate = async (req, res) => {
+  const token = req.headers['X-Auth-Token'];
+
+  try {
+    const decoded = jwt.verify(token, 'Sindhu123');
+    const Email = decoded.email;
+    const user = new User.findOne({ Email });
+
+    res.status(200).json({ MatchDetails: user.MatchDetails });
+  } catch (error) {
+    res.json({ status: 'error', error: 'invalid token' });
+  }
+};
+export { registerUser, loginController, matchdetails, matchdetailsUpdate };
